@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#7a4f25" />
+  <title>Legacy Cut Meridian</title>
+  <link rel="manifest" href="manifest.json" />
+  <style>
+    :root{
+      --bg:#f8f0df; --paper:#fffaf0; --panel:#f1dfbd; --ink:#2e2118; --muted:#745e49;
+      --gold:#b8873c; --gold2:#7a4f25; --line:#d7bd8b; --ok:#247a43; --bad:#a83232;
+      --shadow:0 12px 30px rgba(64,40,18,.14); --radius:18px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;min-height:100%;background:linear-gradient(180deg,var(--bg),#efe0bf);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+    body{padding:12px; padding-bottom:90px;}
+    button,input,textarea,select{font:inherit}
+    .app{max-width:980px;margin:0 auto}
+    header{position:sticky;top:0;z-index:10;background:rgba(248,240,223,.94);backdrop-filter:blur(10px);padding:10px 0 12px;border-bottom:1px solid rgba(122,79,37,.12)}
+    .brand{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .brand h1{font-size:1.35rem;margin:0;letter-spacing:.02em}.brand p{margin:2px 0 0;color:var(--muted);font-size:.86rem}
+    .pill{background:var(--ink);color:var(--paper);border-radius:999px;padding:8px 10px;font-weight:700;font-size:.78rem;white-space:nowrap}
+    nav{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin-top:10px}
+    nav button,.btn{border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:14px;padding:10px 8px;font-weight:750;box-shadow:0 2px 0 rgba(122,79,37,.1);cursor:pointer}
+    nav button.active,.btn.primary{background:linear-gradient(180deg,#c99a50,var(--gold2));color:white;border-color:var(--gold2)}
+    .grid{display:grid;gap:12px}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.card{background:rgba(255,250,240,.92);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:14px;margin-top:12px}.card h2,.card h3{margin:0 0 10px}.muted{color:var(--muted)}
+    label{display:block;font-weight:750;margin:10px 0 5px}.field,input,textarea,select{width:100%;border:1px solid var(--line);border-radius:13px;background:#fffdf7;color:var(--ink);padding:11px;outline:none}textarea{min-height:90px;resize:vertical}.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+    .checks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.check{display:flex;align-items:center;gap:8px;border:1px solid var(--line);background:#fffdf7;border-radius:13px;padding:9px;min-height:42px}.check input{width:auto}.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px}.btn.danger{background:#fff4f0;color:var(--bad);border-color:#dca49b}.btn.ghost{background:#fffdf7}.btn.ok{background:#eefaf1;color:var(--ok);border-color:#99c6a5}
+    .totals{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.totalBox{background:#fffdf7;border:1px solid var(--line);border-radius:16px;padding:12px}.totalBox strong{display:block;font-size:1.35rem;margin-top:4px}.receipt{white-space:pre-wrap;background:#fffdf7;border:1px dashed var(--gold2);border-radius:16px;padding:14px;line-height:1.45}.listItem{border:1px solid var(--line);background:#fffdf7;border-radius:15px;padding:11px;margin-top:8px}.listTop{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}.badge{border-radius:999px;padding:5px 8px;font-size:.75rem;font-weight:800;background:#efe1c4;color:var(--gold2);white-space:nowrap}.hidden{display:none!important}.small{font-size:.84rem}.warn{background:#fff5da;border:1px solid #d8b262;border-radius:14px;padding:10px;color:#604214}
+    @media(max-width:720px){body{padding:10px;padding-bottom:94px}.brand{align-items:flex-start}.pill{font-size:.7rem}.cards,.row,.row3,.totals{grid-template-columns:1fr}.checks{grid-template-columns:1fr}nav{position:fixed;left:8px;right:8px;bottom:8px;z-index:30;background:rgba(248,240,223,.96);border:1px solid var(--line);border-radius:20px;padding:7px;box-shadow:var(--shadow)}nav button{font-size:.73rem;padding:9px 4px;border-radius:13px}.card{padding:12px}}
+    @media print{header,nav,.actions,.noPrint{display:none!important}body{background:white;padding:0}.card{box-shadow:none;border:0}.receipt{border:0}}
+  </style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="brand">
+      <div><h1>Legacy Cut Meridian</h1><p>Personal order, receipt, and payment tracker for BiRD</p></div>
+      <div class="pill">GitHub PWA v1</div>
+    </div>
+    <nav aria-label="Main navigation">
+      <button class="active" data-tab="orders">Orders</button><button data-tab="receipts">Receipts</button><button data-tab="clients">Clients</button><button data-tab="payments">Payments</button><button data-tab="settings">Settings</button>
+    </nav>
+  </header>
+
+  <main>
+    <section id="orders" class="tab">
+      <div class="card warn"><strong>Locked scope:</strong> Payment method is manual only. No CashApp/Chime/PayPal/Square account login or bank API sync. The selected payment method saves to the order, receipt, and tracker.</div>
+      <form id="orderForm" class="card" autocomplete="on">
+        <h2>New Legacy Cut Order</h2>
+        <input type="hidden" id="editingId" />
+        <div class="row3"><div><label>Date</label><input id="date" type="date" required /></div><div><label>Estimated Delivery Date</label><input id="deliveryDate" type="date" /></div><div><label>Order Status</label><select id="status"><option>Open</option><option>In Progress</option><option>Ready</option><option>Delivered</option><option>Cancelled</option></select></div></div>
+        <div class="row"><div><label>Name</label><input id="name" placeholder="Client name" required /></div><div><label>Phone</label><input id="phone" inputmode="tel" placeholder="Phone" /></div></div>
+        <div class="row"><div><label>Email</label><input id="email" type="email" placeholder="Email" /></div><div><label>Address</label><input id="address" placeholder="Address" /></div></div>
+        <h3>Product(s)</h3><div class="checks" data-group="products"></div><label>Other Product</label><input id="otherProduct" placeholder="Other product" />
+        <h3>Size</h3><div class="checks" data-group="sizes"></div><label>Custom Size</label><input id="customSize" placeholder="Custom size" />
+        <h3>Design Options</h3><div class="checks" data-group="designs"></div>
+        <h3>Font Options</h3><div class="checks" data-group="fonts"></div><label>Custom Font</label><input id="customFont" placeholder="Custom font" />
+        <h3>Wood Stain Options <span class="muted small">Included in price</span></h3><div class="checks" data-group="stains"></div>
+        <h3>Wood Color(s) <span class="muted small">Extra $5 each; custom +$3/color</span></h3><div class="checks" data-group="colors"></div><label>Custom Color Notes</label><input id="customColor" placeholder="Custom color(s)" />
+        <label>Customization / Personalization</label><textarea id="customization" placeholder="Names, dates, phrases, design notes..."></textarea>
+        <div class="row3"><div><label>Total Price Due</label><input id="totalDue" type="number" min="0" step="0.01" placeholder="0.00" /></div><div><label>Total Paid</label><input id="totalPaid" type="number" min="0" step="0.01" placeholder="0.00" /></div><div><label>Total Balance</label><input id="balance" type="text" readonly /></div></div>
+        <label>Payment Method</label><select id="paymentMethod"><option>Cash</option><option>Square/Card</option><option>CashApp</option><option>Chime</option><option>PayPal</option><option>Other</option></select><label>Other Payment Note</label><input id="otherPayment" placeholder="Only if Other" />
+        <div class="actions"><button type="submit" class="btn primary">Save Order</button><button type="button" id="newOrderBtn" class="btn ghost">Clear Form</button><button type="button" id="copyReceiptBtn" class="btn ok">Copy Receipt</button><button type="button" id="shareReceiptBtn" class="btn ok">Share Receipt</button></div>
+      </form>
+      <div class="card"><h2>Saved Orders</h2><div id="ordersList"></div></div>
+    </section>
+
+    <section id="receipts" class="tab hidden"><div class="card"><h2>Receipt Preview</h2><p class="muted">Select an order or save the form to generate a receipt.</p><div id="receiptBox" class="receipt"></div><div class="actions"><button class="btn ok" id="copyReceiptBtn2">Copy Receipt</button><button class="btn ok" id="shareReceiptBtn2">Share Receipt</button><button class="btn ghost" onclick="window.print()">Print</button></div></div></section>
+    <section id="clients" class="tab hidden"><div class="card"><h2>Clients</h2><div id="clientsList"></div></div></section>
+    <section id="payments" class="tab hidden"><div class="card"><h2>Payment Trackers</h2><div id="totals" class="totals"></div></div><div class="card"><h2>Payment History</h2><div id="paymentsList"></div></div></section>
+    <section id="settings" class="tab hidden"><div class="card"><h2>Settings & Backup</h2><p class="muted">Data saves locally on this device. Export backups often.</p><div class="actions"><button class="btn ok" id="exportBtn">Export Backup JSON</button><label class="btn ghost" for="importFile">Import Backup JSON</label><input id="importFile" type="file" accept="application/json" class="hidden" /><button class="btn danger" id="clearAllBtn">Delete All Local Data</button></div></div><div class="card"><h2>Project Rules</h2><ul><li>Main Meridian is untouched.</li><li>This is a separate Legacy Cut personal version.</li><li>Confirmed systems are locked unless directly requested.</li><li>Use full file replacement ZIP workflow for GitHub uploads.</li></ul></div></section>
+  </main>
+</div>
+<script>
+'use strict';
+const KEY='legacycut_meridian_v1';
+const $=id=>document.getElementById(id);
+const money=n=>Number(n||0).toLocaleString(undefined,{style:'currency',currency:'USD'});
+const today=()=>new Date().toISOString().slice(0,10);
+const opts={products:['Sign','Frame','Puzzle','Coasters','Key Chain','Bookmark','Notebook Cover','Book Box','Garden Stakes'],sizes:['Standard','Small','Medium','Large'],designs:['A','B','C','Custom'],fonts:['1','2','3','4','Custom'],stains:['Dark Stain Back / Light Stain Letters','Light Stain Back / Dark Stain Letters'],colors:['Red','Dark Pink','Light Pink','Purple','Baby Blue','Light Blue','Dark Blue','Green','Light Yellow','Dark Yellow','Light Brown','Dark Brown','Black','White','Custom Color (+$3/color)']};
+let state={orders:[],lastReceipt:''};
+function safeJsonParse(raw,fallback){try{return JSON.parse(raw)||fallback}catch{return fallback}}
+function load(){state=safeJsonParse(localStorage.getItem(KEY),state); if(!Array.isArray(state.orders))state.orders=[];}
+function save(){localStorage.setItem(KEY,JSON.stringify(state));}
+function renderChecks(){Object.entries(opts).forEach(([group,values])=>{const box=document.querySelector(`[data-group="${group}"]`);box.innerHTML=values.map(v=>`<label class="check"><input type="checkbox" name="${group}" value="${escapeHtml(v)}"> <span>${escapeHtml(v)}</span></label>`).join('');});}
+function escapeHtml(s){return String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
+function checked(name){return [...document.querySelectorAll(`input[name="${name}"]:checked`)].map(x=>x.value)}
+function setChecked(name,values){document.querySelectorAll(`input[name="${name}"]`).forEach(x=>x.checked=(values||[]).includes(x.value));}
+function calcBalance(){const due=Number($('totalDue').value||0), paid=Number($('totalPaid').value||0); $('balance').value=money(Math.max(due-paid,0));}
+function formOrder(){const due=Number($('totalDue').value||0),paid=Number($('totalPaid').value||0);return {id:$('editingId').value||crypto.randomUUID(),date:$('date').value||today(),deliveryDate:$('deliveryDate').value,status:$('status').value,name:$('name').value.trim(),phone:$('phone').value.trim(),email:$('email').value.trim(),address:$('address').value.trim(),products:checked('products'),otherProduct:$('otherProduct').value.trim(),sizes:checked('sizes'),customSize:$('customSize').value.trim(),designs:checked('designs'),fonts:checked('fonts'),customFont:$('customFont').value.trim(),stains:checked('stains'),colors:checked('colors'),customColor:$('customColor').value.trim(),customization:$('customization').value.trim(),totalDue:due,totalPaid:paid,balance:Math.max(due-paid,0),paymentMethod:$('paymentMethod').value,otherPayment:$('otherPayment').value.trim(),updatedAt:new Date().toISOString()};}
+function validateOrder(o){if(!o.name)return 'Client name is required.'; if(o.totalDue<0||o.totalPaid<0)return 'Money amounts cannot be negative.'; if(o.totalPaid>o.totalDue && !confirm('Paid is higher than total due. Save anyway?'))return 'Save cancelled.'; return '';}
+function putOrder(o){const i=state.orders.findIndex(x=>x.id===o.id); if(i>=0)state.orders[i]=o; else state.orders.unshift(o); state.lastReceipt=receipt(o); save(); renderAll();}
+function receipt(o){const products=[...o.products,o.otherProduct].filter(Boolean).join(', ')||'Custom order'; const details=[`Product: ${products}`,o.sizes?.length?`Size: ${o.sizes.join(', ')}`:'',o.customSize?`Custom Size: ${o.customSize}`:'',o.designs?.length?`Design: ${o.designs.join(', ')}`:'',o.fonts?.length?`Font: ${o.fonts.join(', ')}`:'',o.customFont?`Custom Font: ${o.customFont}`:'',o.stains?.length?`Stain: ${o.stains.join(', ')}`:'',o.colors?.length?`Wood Color(s): ${o.colors.join(', ')}`:'',o.customColor?`Custom Color Notes: ${o.customColor}`:'',o.customization?`Customization: ${o.customization}`:''].filter(Boolean).join('\n');
+return `Legacy Cut LLC\n"Crafted with Passion, Cut with Precision"\n\nARTIST: BiRD\nPHONE: (562) 505-4588\nEMAIL: LegacyCutLLC@gmail.com\n\nDate: ${o.date||''}\nClient: ${o.name||''}\n\n${details}\n\nTotal: ${money(o.totalDue)}\nPaid: ${money(o.totalPaid)}\nPayment Method: ${o.paymentMethod}${o.paymentMethod==='Other'&&o.otherPayment?' - '+o.otherPayment:''}\nBalance: ${money(o.balance)}\n\nEst. Delivery Date: ${o.deliveryDate||''}\n\nThank you for supporting handmade work.`,}
+function loadOrder(id){const o=state.orders.find(x=>x.id===id); if(!o)return; $('editingId').value=o.id; ['date','deliveryDate','status','name','phone','email','address','otherProduct','customSize','customFont','customColor','customization','paymentMethod','otherPayment'].forEach(k=>$(k).value=o[k]||''); $('totalDue').value=o.totalDue||0; $('totalPaid').value=o.totalPaid||0; setChecked('products',o.products);setChecked('sizes',o.sizes);setChecked('designs',o.designs);setChecked('fonts',o.fonts);setChecked('stains',o.stains);setChecked('colors',o.colors);calcBalance(); state.lastReceipt=receipt(o); save(); renderAll(); showTab('orders'); window.scrollTo({top:0,behavior:'smooth'});}
+function deleteOrder(id){if(!confirm('Delete this order?'))return; state.orders=state.orders.filter(o=>o.id!==id); save(); renderAll();}
+function resetForm(){document.getElementById('orderForm').reset(); $('editingId').value=''; $('date').value=today(); calcBalance();}
+function renderOrders(){if(!state.orders.length){$('ordersList').innerHTML='<p class="muted">No saved orders yet.</p>';return;} $('ordersList').innerHTML=state.orders.map(o=>`<div class="listItem"><div class="listTop"><div><strong>${escapeHtml(o.name)}</strong><div class="small muted">${escapeHtml(o.date)} • ${escapeHtml(o.paymentMethod)} • Balance ${money(o.balance)}</div></div><span class="badge">${escapeHtml(o.status||'Open')}</span></div><div class="actions"><button class="btn ghost" onclick="loadOrder('${o.id}')">Open</button><button class="btn ok" onclick="selectReceipt('${o.id}')">Receipt</button><button class="btn danger" onclick="deleteOrder('${o.id}')">Delete</button></div></div>`).join('');}
+function selectReceipt(id){const o=state.orders.find(x=>x.id===id); if(o){state.lastReceipt=receipt(o);save();renderAll();showTab('receipts');}}
+function renderReceipt(){$('receiptBox').textContent=state.lastReceipt||'No receipt selected yet.';}
+function renderClients(){const map=new Map(); state.orders.forEach(o=>{const key=(o.name||'Unknown').toLowerCase(); if(!map.has(key))map.set(key,{name:o.name||'Unknown',phone:o.phone,email:o.email,total:0,paid:0,balance:0,count:0}); const c=map.get(key); c.total+=Number(o.totalDue||0);c.paid+=Number(o.totalPaid||0);c.balance+=Number(o.balance||0);c.count++;}); const arr=[...map.values()]; $('clientsList').innerHTML=arr.length?arr.map(c=>`<div class="listItem"><strong>${escapeHtml(c.name)}</strong><div class="small muted">${escapeHtml(c.phone||'')} ${escapeHtml(c.email||'')}</div><div class="small">Orders: ${c.count} • Total ${money(c.total)} • Paid ${money(c.paid)} • Balance ${money(c.balance)}</div></div>`).join(''):'<p class="muted">No clients yet.</p>';}
+function renderPayments(){const methods=['Cash','Square/Card','CashApp','Chime','PayPal','Other']; const total=state.orders.reduce((a,o)=>a+Number(o.totalDue||0),0), paid=state.orders.reduce((a,o)=>a+Number(o.totalPaid||0),0), bal=state.orders.reduce((a,o)=>a+Number(o.balance||0),0); const by=Object.fromEntries(methods.map(m=>[m,0])); state.orders.forEach(o=>{by[o.paymentMethod]=(by[o.paymentMethod]||0)+Number(o.totalPaid||0)}); $('totals').innerHTML=`<div class="totalBox">Total Sales<strong>${money(total)}</strong></div><div class="totalBox">Total Paid<strong>${money(paid)}</strong></div><div class="totalBox">Balance Owed<strong>${money(bal)}</strong></div>`+methods.map(m=>`<div class="totalBox">${escapeHtml(m)}<strong>${money(by[m])}</strong></div>`).join(''); $('paymentsList').innerHTML=state.orders.length?state.orders.map(o=>`<div class="listItem"><strong>${escapeHtml(o.name)}</strong><div class="small muted">${escapeHtml(o.date)} • ${escapeHtml(o.paymentMethod)}</div><div>Paid ${money(o.totalPaid)} / Total ${money(o.totalDue)} / Balance ${money(o.balance)}</div></div>`).join(''):'<p class="muted">No payment history yet.</p>';}
+function renderAll(){renderOrders();renderReceipt();renderClients();renderPayments();}
+function showTab(id){document.querySelectorAll('.tab').forEach(s=>s.classList.toggle('hidden',s.id!==id));document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));}
+async function copyReceipt(){const text=state.lastReceipt||receipt(formOrder()); try{await navigator.clipboard.writeText(text); alert('Receipt copied.');}catch{prompt('Copy receipt:',text);}}
+async function shareReceipt(){const text=state.lastReceipt||receipt(formOrder()); if(navigator.share){try{await navigator.share({title:'Legacy Cut Receipt',text});return;}catch(e){if(e.name==='AbortError')return;}} await copyReceipt();}
+function exportBackup(){const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=`legacycut-meridian-backup-${today()}.json`; a.click(); URL.revokeObjectURL(a.href);}
+function importBackup(file){const r=new FileReader(); r.onload=()=>{const next=safeJsonParse(r.result,null); if(!next||!Array.isArray(next.orders)){alert('Invalid backup file.');return;} state=next; save(); renderAll(); alert('Backup imported.');}; r.readAsText(file);}
+renderChecks(); load(); $('date').value=today(); calcBalance(); renderAll();
+$('totalDue').addEventListener('input',calcBalance); $('totalPaid').addEventListener('input',calcBalance); document.querySelector('nav').addEventListener('click',e=>{if(e.target.matches('button[data-tab]'))showTab(e.target.dataset.tab)});
+$('orderForm').addEventListener('submit',e=>{e.preventDefault(); const o=formOrder(); const err=validateOrder(o); if(err){alert(err);return;} putOrder(o); resetForm(); alert('Order saved.');});
+$('newOrderBtn').addEventListener('click',resetForm); ['copyReceiptBtn','copyReceiptBtn2'].forEach(id=>$(id).addEventListener('click',copyReceipt)); ['shareReceiptBtn','shareReceiptBtn2'].forEach(id=>$(id).addEventListener('click',shareReceipt)); $('exportBtn').addEventListener('click',exportBackup); $('importFile').addEventListener('change',e=>e.target.files[0]&&importBackup(e.target.files[0])); $('clearAllBtn').addEventListener('click',()=>{if(confirm('Delete all local Legacy Cut Meridian data on this device?')){state={orders:[],lastReceipt:''};save();renderAll();resetForm();}});
+if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js').catch(()=>{}));}
+</script>
+</body>
+</html>
