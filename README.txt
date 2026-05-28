@@ -1,4 +1,4 @@
-Legacy Cut Meridian V49.15-LC7
+Legacy Cut Meridian V49.15-LC8
 
 Separate personal copy of the locked Meridian V49.15 Mobile Layout Recovery build.
 
@@ -38,7 +38,7 @@ LC6 patch:
 - No Schedule/Clients/Supplies/Banking layout changes.
 
 
-LC7 patch:
+LC8 patch:
 - Mockup Builder selected text editing now updates live without re-rendering the whole Studio page on every keystroke.
 - Draft text fields for new lettering no longer rebuild the page while typing.
 - Selected lettering text, font, size, finish/color, and rotation update more smoothly.
