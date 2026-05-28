@@ -1,4 +1,4 @@
-Legacy Cut Meridian V49.15-LC8
+Legacy Cut Meridian V49.15-LC9
 
 Separate personal copy of the locked Meridian V49.15 Mobile Layout Recovery build.
 
@@ -43,3 +43,9 @@ LC8 patch:
 - Draft text fields for new lettering no longer rebuild the page while typing.
 - Selected lettering text, font, size, finish/color, and rotation update more smoothly.
 - Preserves LC4/LC5/LC6 locked systems.
+
+
+LC9 patch:
+- Mockup Builder base wood Width/Height/Thickness inputs now update live without re-rendering while typing.
+- Fixes Android keyboard/delete behavior on Height and Thickness fields.
+- No layout/navigation changes.
