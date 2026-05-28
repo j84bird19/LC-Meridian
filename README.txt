@@ -1,4 +1,4 @@
-Legacy Cut Meridian V49.15-LC10
+Legacy Cut Meridian V49.15-LC12
 
 Separate personal copy of the locked Meridian V49.15 Mobile Layout Recovery build.
 
@@ -55,3 +55,12 @@ LC10 patch:
 - Mockup Builder saved/gallery exports now remove blue selection boxes.
 - Tapping blank wood/stage deselects the current text cutout.
 - Saved mockup configs no longer reopen with a selected cutout by default.
+
+
+LC11 patch:
+- Added puzzle piece count options, coaster square option, keychain shape options, rounded bookmark, longer garden stake preview, custom shape drawing, and bounding handles for selected text cutouts.
+
+LC12 patch:
+- Puzzle preview now visibly changes when piece count changes.
+- Custom color selection is restored for base and text cutout controls.
+- Garden stake defaults adjusted closer to 1 inch wide by 6 inches tall.
