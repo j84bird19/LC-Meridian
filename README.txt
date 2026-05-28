@@ -1,4 +1,4 @@
-Legacy Cut Meridian V49.15-LC9
+Legacy Cut Meridian V49.15-LC10
 
 Separate personal copy of the locked Meridian V49.15 Mobile Layout Recovery build.
 
@@ -49,3 +49,9 @@ LC9 patch:
 - Mockup Builder base wood Width/Height/Thickness inputs now update live without re-rendering while typing.
 - Fixes Android keyboard/delete behavior on Height and Thickness fields.
 - No layout/navigation changes.
+
+
+LC10 patch:
+- Mockup Builder saved/gallery exports now remove blue selection boxes.
+- Tapping blank wood/stage deselects the current text cutout.
+- Saved mockup configs no longer reopen with a selected cutout by default.
